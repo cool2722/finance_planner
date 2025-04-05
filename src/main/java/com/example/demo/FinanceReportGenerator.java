@@ -31,7 +31,6 @@ import java.util.List;
 
 public class FinanceReportGenerator {
    
-
     public static void main(String[] args) {
         try {
             // Step 1: Create Dummy Transactions
