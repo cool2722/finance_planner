@@ -1,11 +1,14 @@
 package com.example.application.user;
 
+import org.springframework.stereotype.Service;
+
 import com.example.domain.account.Email;
 import com.example.domain.account.Password;
 import com.example.domain.user.User;
 import com.example.domain.user.UserRepository;
-import com.example.domain.*;
+import com.example.infrastructure.account.JwtUtil;
 
+@Service
 public class AuthService {
     private final UserRepository userRepository;
 
@@ -31,6 +34,6 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return JwtUtil.generateToken(user); // To be implemented
+        return JwtUtil.generateToken(user);
     }
 }
