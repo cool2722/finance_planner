@@ -1,9 +1,9 @@
 package com.example.domain.user;
 
-import java.util.UUID;
-
 import com.example.domain.account.Email;
 import com.example.domain.account.Password;
+
+import java.util.UUID;
 
 public class User {
     private UUID id;
