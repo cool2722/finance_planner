@@ -1,14 +1,14 @@
 package com.example.infrastructure.transaction;
 
-import com.example.domain.transaction.Transaction;
-import com.example.domain.transaction.TransactionRepository;
-import com.example.domain.transaction.TransactionType;
-import com.example.domain.transaction.RepeatType;
+import com.example.domain.transaction.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class InMemoryTransactionRepository implements TransactionRepository {
     private final Map<String, List<Transaction>> store = new ConcurrentHashMap<>();
 
@@ -27,6 +27,11 @@ public class InMemoryTransactionRepository implements TransactionRepository {
     }
 
     @Override
+    public List<Transaction> findRecentByUserId(String userId) {
+        return findLastNByUserId(userId, 5); 
+    }
+
+    @Override
     public List<Transaction> findByUserIdFiltered(String userId, TransactionType type, RepeatType repeatType) {
         return getUserTransactions(userId).stream()
                 .filter(tx -> type == null || tx.getType() == type)
@@ -36,13 +41,5 @@ public class InMemoryTransactionRepository implements TransactionRepository {
 
     private List<Transaction> getUserTransactions(String userId) {
         return store.getOrDefault(userId, Collections.emptyList());
-    }
-
-    @Override
-    public List<Transaction> findLastFiveByUserId(String userId) {
-        return getUserTransactions(userId).stream()
-                .sorted(Comparator.comparing(Transaction::getTimestamp).reversed())
-                .limit(5)
-                .collect(Collectors.toList());
-    }
+    } // The DRY Principle
 }

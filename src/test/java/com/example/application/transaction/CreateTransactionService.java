@@ -15,7 +15,7 @@ class CreateTransactionServiceTest {
         TransactionRepository repo = mock(TransactionRepository.class);
         CreateTransactionService service = new CreateTransactionService(repo);
 
-        Transaction tx = new Transaction("user1", "Netflix",
+        Transaction tx = new Transaction("user1",null, "Netflix",
                 new Money(new BigDecimal("10.00"), Currency.USD),
                 TransactionType.EXPENSE, RepeatType.MONTHLY,
                 "Netflix Inc", null);

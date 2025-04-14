@@ -3,7 +3,9 @@ package com.example.web;
 import com.example.application.user.AuthService;
 import com.example.web.dto.AuthRequest;
 import com.example.web.dto.JwtResponse;
-
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final AuthService authService;
 
     public UserController(AuthService authService) {
@@ -19,22 +22,24 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody AuthRequest request) {
         try {
             authService.register(request.getEmail(), request.getPassword());
-            return ResponseEntity.status(HttpStatus.CREATED).body("Registered successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Registration failed: " + e.getMessage());
+            logger.warn("Registration failed: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use");
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthRequest request) {
         try {
             String token = authService.login(request.getEmail(), request.getPassword());
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
+            logger.warn("Login failed: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
-}
+} 

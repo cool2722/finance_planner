@@ -8,12 +8,11 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
 
- // Simple Transaction Class (No DB needed)
+ // Simple Transaction Class
  class Transaction {
     private final String description;
     private final double amount;

@@ -13,7 +13,7 @@ class InMemoryTransactionRepositoryTest {
     void returnsMax50Transactions() {
         InMemoryTransactionRepository repo = new InMemoryTransactionRepository();
         for (int i = 0; i < 100; i++) {
-            repo.save(new Transaction("u1", "T" + i, new Money(new BigDecimal(Double.toString(100 * (Math.random() * i))), Currency.INR), TransactionType.EXPENSE, RepeatType.NONE, "X", "u1"));
+            repo.save(new Transaction("u1",null ,"T" + i, new Money(new BigDecimal(Double.toString(100 * (Math.random() * i))), Currency.INR), TransactionType.EXPENSE, RepeatType.NONE, "X", "u1"));
             // Code smell with double floating point precisioin?
         }
         List<Transaction> results = repo.findLastNByUserId("u1", 100);

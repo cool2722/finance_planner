@@ -3,11 +3,13 @@ package com.example.infrastructure.report;
 import com.example.domain.transaction.Transaction;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+@Component
 public class PdfReportBuilder {
 
     public byte[] build(String userId, List<Transaction> allTransactions, List<Transaction> subscriptions, List<Transaction> recurringIncomes) {
@@ -36,7 +38,7 @@ public class PdfReportBuilder {
                 content.beginText();
                 content.newLineAtOffset(50, y);
                 content.showText(tx.getTimestamp().toLocalDate() + " | " + tx.getReference() + " | " +
-                        tx.getAmount().getValue() + " " + tx.getAmount().getCurrency());
+                        tx.getMoney().getValue() + " " + tx.getMoney().getCurrency());
                 content.endText();
             }
     
@@ -67,7 +69,7 @@ public class PdfReportBuilder {
                 content.beginText();
                 content.newLineAtOffset(50, y);
                 content.showText(tx.getReference() + " | " + tx.getRepeatType().name() + " | " +
-                        tx.getAmount().getValue() + " " + tx.getAmount().getCurrency());
+                        tx.getMoney().getValue() + " " + tx.getMoney().getCurrency());
                 content.endText();
             }
     
