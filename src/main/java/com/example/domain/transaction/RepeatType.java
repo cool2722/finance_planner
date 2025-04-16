@@ -1,7 +1,31 @@
 package com.example.domain.transaction;
 
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
+
 public enum RepeatType {
-    NONE, MONTHLY, YEARLY;
+    NONE {
+        @Override
+        public LocalDateTime nextOccurrence(LocalDateTime from) {
+            return null;
+        }
+    },
+    MONTHLY {
+        @Override
+        public LocalDateTime nextOccurrence(LocalDateTime from) {
+            return from.with(TemporalAdjusters.lastDayOfMonth()).withHour(0).withMinute(0);
+        }
+    },
+    YEARLY {
+        @Override
+        public LocalDateTime nextOccurrence(LocalDateTime from) {
+            return from.withMonth(12)
+                       .with(TemporalAdjusters.lastDayOfMonth())
+                       .withHour(0).withMinute(0);
+        }
+    };
+
+    public abstract LocalDateTime nextOccurrence(LocalDateTime from);
 
     public static RepeatType fromCode(String code) {
         return switch (code.toUpperCase()) {
@@ -14,4 +38,4 @@ public enum RepeatType {
     public boolean isRecurring() {
         return this != NONE;
     }
-} // Currently does not make sense in yearly recursion, NO LOGIC to handle explicitly the time distance between the recurring transaction
+}

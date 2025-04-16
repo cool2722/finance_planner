@@ -15,13 +15,13 @@ public class ReportController {
     }
 
     @GetMapping("/summary")
-    public ResponseEntity<byte[]> generateReport(@RequestParam String userId) {
-        byte[] pdfBytes = generateReportService.generateQuarterlyReport(userId);
+    public ResponseEntity<byte[]> generateReport(@RequestParam String username) {
+        byte[] pdfBytes = generateReportService.generateQuarterlyReport(username);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.builder("attachment")
-                .filename("quarterly_report_" + userId + ".pdf")
+                .filename("quarterly_report_" + username + ".pdf")
                 .build());
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);

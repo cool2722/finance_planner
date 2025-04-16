@@ -21,9 +21,9 @@ public class GenerateReportService {
         this.pdfReportBuilder = pdfReportBuilder;
     }
 
-    public byte[] generateQuarterlyReport(String userId) {
+    public byte[] generateQuarterlyReport(String username) {
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
-        List<Transaction> allTx = transactionRepository.findLastNByUserId(userId, 100);
+        List<Transaction> allTx = transactionRepository.findLastNByUsername(username, 100);
 
         List<Transaction> recentTx = allTx.stream()
                 .filter(tx -> tx.getTimestamp().isAfter(threeMonthsAgo))
@@ -37,6 +37,6 @@ public class GenerateReportService {
             .filter(tx -> tx.getRepeatType().isRecurring() && tx.getType().isExpense())
             .collect(Collectors.toList());    
 
-        return pdfReportBuilder.build(userId, recentTx, recurringExpenses, recurringIncomes);
+        return pdfReportBuilder.build(username, recentTx, recurringExpenses, recurringIncomes);
     }
 }

@@ -15,7 +15,7 @@ public class Money {
         if (value.signum() <= 0) {
             throw new IllegalArgumentException("Amount must be positive");
         }
-        this.value = value.setScale(2, RoundingMode.HALF_DOWN);
+        this.value = value.setScale(2, RoundingMode.DOWN);
         this.currency = currency;
     }
 

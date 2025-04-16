@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class PdfReportBuilder {
 
-    public byte[] build(String userId, List<Transaction> allTransactions, List<Transaction> subscriptions, List<Transaction> recurringIncomes) {
+    public byte[] build(String username, List<Transaction> allTransactions, List<Transaction> subscriptions, List<Transaction> recurringIncomes) {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
             document.addPage(page);
@@ -21,7 +21,7 @@ public class PdfReportBuilder {
             content.setFont(PDType1Font.HELVETICA_BOLD, 16);
             content.beginText();
             content.newLineAtOffset(50, 750);
-            content.showText("Quarterly Report for: " + userId);
+            content.showText("Quarterly Report for: " + username);
             content.endText();
     
             content.setFont(PDType1Font.HELVETICA, 12);

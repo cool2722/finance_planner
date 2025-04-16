@@ -1,5 +1,6 @@
 package com.example.infrastructure.account;
 
+import com.example.domain.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -11,10 +12,10 @@ public class JwtUtil {
     private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours
 
-    public static String generateToken(com.example.domain.user.User user) {
+    public static String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getId().toString())
-                .claim("email", user.getEmail().getValue())
+                .setSubject(user.getUsername().getValue())
+                .claim("username", user.getUsername().getValue())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(secretKey)
@@ -30,7 +31,7 @@ public class JwtUtil {
         }
     }
 
-    public static String extractUserId(String token) {
+    public static String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
@@ -38,4 +39,4 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
-}
+} // Stateless class; for utility.

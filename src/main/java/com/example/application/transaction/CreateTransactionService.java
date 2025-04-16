@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.domain.transaction.Transaction;
 import com.example.domain.transaction.TransactionRepository;
+import com.example.web.dto.TransactionRequest;
 
 @Service
 public class CreateTransactionService {
@@ -15,10 +16,20 @@ public class CreateTransactionService {
         this.transactionRepository = Objects.requireNonNull(transactionRepository, "TransactionRepository is required");
     }
 
-    public Transaction create(Transaction transaction) {
-        if (transaction == null) {
-            throw new IllegalArgumentException("Transaction must not be null");
+    public Transaction create(String username, TransactionRequest req) {
+        if (req == null) {
+            throw new IllegalArgumentException("TransactionRequest cannot be null");
         }
-        return transactionRepository.save(transaction);
-    }
+        Transaction tx = new Transaction(
+            username,
+            req.time,
+            req.reference,
+            req.money,
+            req.type,
+            req.repeatType,
+            req.sentTo,
+            req.sentFrom
+        );
+        return transactionRepository.save(tx);
+    }    
 } 

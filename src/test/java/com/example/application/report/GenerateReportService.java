@@ -18,7 +18,7 @@ class GenerateReportServiceTest {
         when(builder.build(any(), any(), any(), any())).thenReturn(new byte[]{1, 2, 3});
     
         GenerateReportService service = new GenerateReportService(repo, builder);
-        when(repo.findLastNByUserId(any(), anyInt())).thenReturn(List.of());
+        when(repo.findLastNByUsername(any(), anyInt())).thenReturn(List.of());
     
         byte[] report = service.generateQuarterlyReport("user123");
         assertNotNull(report);

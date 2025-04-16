@@ -24,18 +24,18 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody AuthRequest request) {
         try {
-            authService.register(request.getEmail(), request.getPassword());
+            authService.register(request.getUsername(), request.getPassword());
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
         } catch (RuntimeException e) {
             logger.warn("Registration failed: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already in use");
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthRequest request) {
         try {
-            String token = authService.login(request.getEmail(), request.getPassword());
+            String token = authService.login(request.getUsername(), request.getPassword());
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (RuntimeException e) {
             logger.warn("Login failed: {}", e.getMessage());

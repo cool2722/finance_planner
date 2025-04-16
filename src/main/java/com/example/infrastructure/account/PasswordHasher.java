@@ -12,4 +12,4 @@ public class PasswordHasher {
     public static boolean matches(String raw, String hashed) {
         return encoder.matches(raw, hashed);
     }
-}
+} // Stateless class, only for utility

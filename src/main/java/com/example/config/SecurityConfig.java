@@ -15,11 +15,11 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/","/api/auth/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin().disable()
             .httpBasic().disable();
         return http.build();
-    } //For test purposes
+    } //To get access to localhost website
 }

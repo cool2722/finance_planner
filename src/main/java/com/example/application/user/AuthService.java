@@ -1,8 +1,10 @@
 package com.example.application.user;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 
-import com.example.domain.account.Email;
+import com.example.domain.account.Username;
 import com.example.domain.account.Password;
 import com.example.domain.user.User;
 import com.example.domain.user.UserRepository;
@@ -13,21 +15,21 @@ public class AuthService {
     private final UserRepository userRepository;
 
     public AuthService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        this.userRepository = Objects.requireNonNull(userRepository, "UserRepository must not be null"); // Redundant?
     }
 
-    public User register(String email, String rawPassword) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Email already in use");
+    public User register(String username, String rawPassword) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new RuntimeException("Username already in use");
         }
-        Email emailVO = new Email(email);
+        Username usernameVO = new Username(username);
         Password passwordVO = new Password(rawPassword);
-        User user = new User(emailVO, passwordVO);
+        User user = new User(usernameVO, passwordVO);
         return userRepository.save(user);
     }
 
-    public String login(String email, String rawPassword) {
-        User user = userRepository.findByEmail(email)
+    public String login(String username, String rawPassword) {
+        User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
         if (!user.getPassword().matches(rawPassword)) {

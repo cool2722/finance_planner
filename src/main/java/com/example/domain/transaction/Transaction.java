@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class Transaction {
     private final UUID id;
-    private final String userId;
+    private final String username;
     private final String reference;
     private final Money money;
     private final TransactionType type;
@@ -16,20 +16,20 @@ public class Transaction {
     private final String sentFrom;
     private final LocalDateTime timestamp;
 
-    public Transaction(String userId,LocalDateTime time ,String reference, Money money, TransactionType type, RepeatType repeatType, String sentTo, String sentFrom) {
+    public Transaction(String username,LocalDateTime time ,String reference, Money money, TransactionType type, RepeatType repeatType, String sentTo, String sentFrom) {
         this.id = UUID.randomUUID();
-        this.userId = Objects.requireNonNull(userId, "Must assign to a user");;
+        this.username = Objects.requireNonNull(username, "Must assign to a user");;
         this.reference = reference != null ? reference : "";
         this.money = money;
         this.type = type;
         this.repeatType = repeatType != null ? repeatType : RepeatType.NONE;
-        this.sentTo = (type.isExpense()) ? sentTo : userId; // If not an Expense, it is necessarily Income, and Income is always sent to user itself
-        this.sentFrom = (type.isIncome()) ? sentFrom : userId;
+        this.sentTo = (type.isExpense()) ? sentTo : username; // If not an Expense, it is necessarily Income, and Income is always sent to user itself
+        this.sentFrom = (type.isIncome()) ? sentFrom : username;
         this.timestamp = time != null ? time : LocalDateTime.now();
-    } // sentTo and sentFrom may have smells
+    } // sentTo and sentFrom may have smells, could add specific valid state validation inside constructor
 
     public UUID getId() { return id; }
-    public String getUserId() { return userId; }
+    public String getUsername() { return username; }
     public String getReference() { return reference; }
     public Money getMoney() { return money; }
     public TransactionType getType() { return type; }

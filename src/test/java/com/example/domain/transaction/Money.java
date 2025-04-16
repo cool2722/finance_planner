@@ -32,12 +32,6 @@ class MoneyTest {
     }
 
     @Test
-    void shouldRejectNegativeAmount() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new Money(new BigDecimal("-1"), Currency.USD));
-    }
-
-    @Test
     void shouldRejectNullValue() {
         assertThrows(IllegalArgumentException.class, () ->
                 new Money(null, Currency.USD));

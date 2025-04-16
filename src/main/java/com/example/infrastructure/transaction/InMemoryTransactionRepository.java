@@ -1,6 +1,10 @@
 package com.example.infrastructure.transaction;
 
-import com.example.domain.transaction.*;
+import com.example.domain.transaction.TransactionRepository;
+import com.example.domain.transaction.TransactionType;
+import com.example.infrastructure.transaction.InMemoryTransactionRepository;
+import com.example.domain.transaction.RepeatType;
+import com.example.domain.transaction.Transaction;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,32 +18,32 @@ public class InMemoryTransactionRepository implements TransactionRepository {
 
     @Override
     public Transaction save(Transaction transaction) {
-        store.computeIfAbsent(transaction.getUserId(), k -> new ArrayList<>()).add(transaction);
+        store.computeIfAbsent(transaction.getUsername(), k -> new ArrayList<>()).add(transaction);
         return transaction;
     }
 
     @Override
-    public List<Transaction> findLastNByUserId(String userId, int n) {
-        return getUserTransactions(userId).stream()
+    public List<Transaction> findLastNByUsername(String username, int n) {
+        return getUserTransactions(username).stream()
                 .sorted(Comparator.comparing(Transaction::getTimestamp).reversed())
                 .limit(Math.min(n, 50))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Transaction> findRecentByUserId(String userId) {
-        return findLastNByUserId(userId, 5); 
+    public List<Transaction> findRecentByUsername(String username) {
+        return findLastNByUsername(username, 5); 
     }
 
     @Override
-    public List<Transaction> findByUserIdFiltered(String userId, TransactionType type, RepeatType repeatType) {
-        return getUserTransactions(userId).stream()
+    public List<Transaction> findByUsernameFiltered(String username, TransactionType type, RepeatType repeatType) {
+        return getUserTransactions(username).stream()
                 .filter(tx -> type == null || tx.getType() == type)
                 .filter(tx -> repeatType == null || tx.getRepeatType() == repeatType)
                 .collect(Collectors.toList());
     }
 
-    private List<Transaction> getUserTransactions(String userId) {
-        return store.getOrDefault(userId, Collections.emptyList());
+    private List<Transaction> getUserTransactions(String username) {
+        return store.getOrDefault(username, Collections.emptyList());
     } // The DRY Principle
 }

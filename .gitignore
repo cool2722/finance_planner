@@ -33,3 +33,4 @@ build/
 .vscode/
 src/main/java/com/example/demo/DemoApplication.java
 src/main/java/com/example/demo/FinanceReportGenerator.java
+src/main/java/com/example/demo/DemoApplication.java

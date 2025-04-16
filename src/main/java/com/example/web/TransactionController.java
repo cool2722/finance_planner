@@ -5,7 +5,10 @@ import com.example.domain.transaction.RepeatType;
 import com.example.domain.transaction.Transaction;
 import com.example.domain.transaction.TransactionRepository;
 import com.example.domain.transaction.TransactionType;
+import com.example.web.dto.TransactionRequest;
+import com.example.infrastructure.account.JwtUtil;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,22 +25,31 @@ public class TransactionController {
         this.transactionRepository = transactionRepository;
     }
 
+
     @PostMapping
-    public Transaction addTransaction(@RequestBody Transaction transaction) {
-        return createTransactionService.create(transaction);
+    public ResponseEntity<?> addTransaction(
+        @RequestHeader("Authorization") String token,
+        @RequestBody TransactionRequest req
+    ) {
+        String username = JwtUtil.extractUsername(token.replace("Bearer ", ""));
+        createTransactionService.create(username, req);
+        return ResponseEntity.ok("Transaction saved");
     }
 
+
     @GetMapping("/recent")
-    public List<Transaction> getRecent(@RequestParam String userId, @RequestParam(defaultValue = "5") int limit) {
-        return transactionRepository.findLastNByUserId(userId, limit);
+    public List<Transaction> getRecent(@RequestHeader("Authorization") String token, @RequestParam(defaultValue = "5") int limit) {
+        String username = JwtUtil.extractUsername(token.replace("Bearer ", ""));
+        return transactionRepository.findLastNByUsername(username, limit);
     }
+
 
     @GetMapping("/search")
     public List<Transaction> search(
-        @RequestParam String userId,
-        @RequestParam TransactionType type,
-        @RequestParam RepeatType repeatType
+        @RequestHeader("Authorization") String token, @RequestParam TransactionType type, @RequestParam RepeatType repeatType
     ) {
-        return transactionRepository.findByUserIdFiltered(userId, type, repeatType);
+        String username = JwtUtil.extractUsername(token.replace("Bearer ", ""));
+        return transactionRepository.findByUsernameFiltered(username, type, repeatType);
     }
-}
+} // Potential Refactor? Maybe Controller shouldnt directly accept Domain models (Transaction)?
+//Code smell lifted

@@ -2,13 +2,10 @@ package com.example.domain.account;
 
 import java.util.Objects;
 
-public class Email {
+public class Username {
     private final String value;
 
-    public Email(String value) {
-        if (!value.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("Invalid email format");
-        } // Double validation may be redundant, not yet sure.
+    public Username(String value) {
         this.value = value.toLowerCase();
     }
 
@@ -19,8 +16,8 @@ public class Email {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Email email)) return false;
-        return value.equals(email.value);
+        if (!(o instanceof Username username)) return false;
+        return value.equals(username.value);
     }
 
     @Override

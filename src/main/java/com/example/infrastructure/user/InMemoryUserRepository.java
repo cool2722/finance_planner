@@ -12,13 +12,13 @@ public class InMemoryUserRepository implements UserRepository {
     private final Map<String, User> users = new HashMap<>();
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return Optional.ofNullable(users.get(email.toLowerCase()));
+    public Optional<User> findByUsername(String username) {
+        return Optional.ofNullable(users.get(username.toLowerCase()));
     }
 
     @Override
     public User save(User user) {
-        users.put(user.getEmail().getValue(), user);
+        users.put(user.getUsername().getValue(), user);
         return user;
     }
 }

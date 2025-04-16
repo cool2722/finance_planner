@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface TransactionRepository {
     Transaction save(Transaction transaction);
-    List<Transaction> findRecentByUserId(String userId);
-    List<Transaction> findLastNByUserId(String userId, int n);
-    List<Transaction> findByUserIdFiltered(String userId, TransactionType type, RepeatType repeatType);
+    List<Transaction> findRecentByUsername(String username);
+    List<Transaction> findLastNByUsername(String username, int n);
+    List<Transaction> findByUsernameFiltered(String username, TransactionType type, RepeatType repeatType);
 }
