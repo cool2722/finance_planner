@@ -16,11 +16,13 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(user.getUsername().getValue())
                 .claim("username", user.getUsername().getValue())
+                .claim("roles", "ROLE_USER")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(secretKey)
                 .compact();
     }
+    
 
     public static boolean validateToken(String token) {
         try {

@@ -20,36 +20,35 @@ public class TransactionController {
     private final CreateTransactionService createTransactionService;
     private final TransactionRepository transactionRepository;
 
-    public TransactionController(CreateTransactionService createTransactionService, TransactionRepository transactionRepository) {
+    public TransactionController(CreateTransactionService createTransactionService,
+            TransactionRepository transactionRepository) {
         this.createTransactionService = createTransactionService;
         this.transactionRepository = transactionRepository;
     }
 
-
     @PostMapping
     public ResponseEntity<?> addTransaction(
-        @RequestHeader("Authorization") String token,
-        @RequestBody TransactionRequest req
-    ) {
+            @RequestHeader("Authorization") String token,
+            @RequestBody TransactionRequest req) {
         String username = JwtUtil.extractUsername(token.replace("Bearer ", ""));
         createTransactionService.create(username, req);
         return ResponseEntity.ok("Transaction saved");
     }
 
-
     @GetMapping("/recent")
-    public List<Transaction> getRecent(@RequestHeader("Authorization") String token, @RequestParam(defaultValue = "5") int limit) {
+    public List<Transaction> getRecent(@RequestHeader("Authorization") String token,
+            @RequestParam(defaultValue = "5") int limit) {
         String username = JwtUtil.extractUsername(token.replace("Bearer ", ""));
         return transactionRepository.findLastNByUsername(username, limit);
     }
 
-
     @GetMapping("/search")
     public List<Transaction> search(
-        @RequestHeader("Authorization") String token, @RequestParam TransactionType type, @RequestParam RepeatType repeatType
-    ) {
+            @RequestHeader("Authorization") String token, @RequestParam TransactionType type,
+            @RequestParam RepeatType repeatType) {
         String username = JwtUtil.extractUsername(token.replace("Bearer ", ""));
         return transactionRepository.findByUsernameFiltered(username, type, repeatType);
     }
-} // Potential Refactor? Maybe Controller shouldnt directly accept Domain models (Transaction)?
-//Code smell lifted
+} // Potential Refactor? Maybe Controller shouldnt directly accept Domain models
+  // (Transaction)?
+  // Code smell lifted

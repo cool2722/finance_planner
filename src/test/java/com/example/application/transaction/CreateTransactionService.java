@@ -1,6 +1,12 @@
 package com.example.application.transaction;
 
-import com.example.domain.transaction.*;
+import com.example.domain.transaction.Money;
+import com.example.domain.transaction.TransactionRepository;
+import com.example.domain.transaction.Transaction;
+import com.example.domain.transaction.RepeatType;
+import com.example.domain.transaction.Currency;
+import com.example.domain.transaction.TransactionType;
+
 import com.example.web.dto.TransactionRequest;
 import org.junit.jupiter.api.Test;
 

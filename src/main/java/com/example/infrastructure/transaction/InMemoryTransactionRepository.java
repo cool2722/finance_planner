@@ -19,11 +19,15 @@ public class InMemoryTransactionRepository implements TransactionRepository {
     @Override
     public Transaction save(Transaction transaction) {
         store.computeIfAbsent(transaction.getUsername(), k -> new ArrayList<>()).add(transaction);
+        System.out.println("Saving transaction for user: " + transaction.getUsername());
         return transaction;
     }
 
     @Override
     public List<Transaction> findLastNByUsername(String username, int n) {
+        System.out.println("Looking up transactions for user: " + username);
+        System.out.println("Found: " + getUserTransactions(username).size());
+
         return getUserTransactions(username).stream()
                 .sorted(Comparator.comparing(Transaction::getTimestamp).reversed())
                 .limit(Math.min(n, 50))
