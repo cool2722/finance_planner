@@ -49,5 +49,5 @@ public class TransactionRepository implements TransactionRepositoryInterface {
 
     private List<Transaction> getUserTransactions(String username) {
         return store.getOrDefault(username, Collections.emptyList());
-    } // The DRY Principle
+    }
 }

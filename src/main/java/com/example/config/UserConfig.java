@@ -1,8 +1,8 @@
 package com.example.config;
 
 import com.example.application.user.AuthService;
-import com.example.domain.user.UserRepository;
-import com.example.infrastructure.user.InMemoryUserRepository;
+import com.example.domain.user.UserRepositoryInterface;
+import com.example.infrastructure.user.UserRepository;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
 public class UserConfig {
 
     @Bean
-    public UserRepository userRepository() {
-        return new InMemoryUserRepository();
+    public UserRepositoryInterface userRepository() {
+        return new UserRepository();
     }
 
     @Bean
-    public AuthService authService(UserRepository userRepository) {
+    public AuthService authService(UserRepositoryInterface userRepository) {
         return new AuthService(userRepository);
     }
 }

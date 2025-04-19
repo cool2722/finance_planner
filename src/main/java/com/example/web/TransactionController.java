@@ -3,7 +3,7 @@ package com.example.web;
 import com.example.application.transaction.CreateTransactionService;
 import com.example.domain.transaction.RepeatType;
 import com.example.domain.transaction.Transaction;
-import com.example.domain.transaction.TransactionRepository;
+import com.example.domain.transaction.TransactionRepositoryInterface;
 import com.example.domain.transaction.TransactionType;
 import com.example.web.dto.TransactionRequest;
 import com.example.infrastructure.account.JwtUtil;
@@ -18,10 +18,10 @@ import java.util.List;
 public class TransactionController {
 
     private final CreateTransactionService createTransactionService;
-    private final TransactionRepository transactionRepository;
+    private final TransactionRepositoryInterface transactionRepository;
 
     public TransactionController(CreateTransactionService createTransactionService,
-            TransactionRepository transactionRepository) {
+            TransactionRepositoryInterface transactionRepository) {
         this.createTransactionService = createTransactionService;
         this.transactionRepository = transactionRepository;
     }

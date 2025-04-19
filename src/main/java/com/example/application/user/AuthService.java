@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import com.example.domain.account.Username;
 import com.example.domain.account.Password;
 import com.example.domain.user.User;
-import com.example.domain.user.UserRepository;
+import com.example.domain.user.UserRepositoryInterface;
 import com.example.infrastructure.account.JwtUtil;
 
 @Service
 public class AuthService {
-    private final UserRepository userRepository;
+    private final UserRepositoryInterface userRepository;
 
-    public AuthService(UserRepository userRepository) {
-        this.userRepository = Objects.requireNonNull(userRepository, "UserRepository must not be null"); // Redundant?
+    public AuthService(UserRepositoryInterface userRepository) {
+        this.userRepository = Objects.requireNonNull(userRepository, "UserRepository must not be null");
     }
 
     public User register(String username, String rawPassword) {

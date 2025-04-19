@@ -5,14 +5,14 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 import com.example.domain.transaction.Transaction;
-import com.example.domain.transaction.TransactionRepository;
+import com.example.domain.transaction.TransactionRepositoryInterface;
 import com.example.web.dto.TransactionRequest;
 
 @Service
 public class CreateTransactionService {
-    private final TransactionRepository transactionRepository;
+    private final TransactionRepositoryInterface transactionRepository;
 
-    public CreateTransactionService(TransactionRepository transactionRepository) {
+    public CreateTransactionService(TransactionRepositoryInterface transactionRepository) {
         this.transactionRepository = Objects.requireNonNull(transactionRepository, "TransactionRepository is required");
     }
 
@@ -20,16 +20,16 @@ public class CreateTransactionService {
         if (req == null) {
             throw new IllegalArgumentException("TransactionRequest cannot be null");
         }
-        Transaction tx = new Transaction(
-            username,
-            req.time,
-            req.reference,
-            req.money,
-            req.type,
-            req.repeatType,
-            req.sentTo,
-            req.sentFrom
-        );
+        Transaction tx = Transaction.builder()
+        .withUsername(username)
+        .withMoney(req.money)
+        .withTimestamp(req.time)
+        .withReference(req.reference)
+        .withType(req.type)
+        .withRepeatType(req.repeatType)
+        .withSentTo(req.sentTo)
+        .withSentFrom(req.sentFrom)
+        .build();
         return transactionRepository.save(tx);
     }    
 } 

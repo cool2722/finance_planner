@@ -18,32 +18,31 @@ import static org.mockito.Mockito.*;
 class GenerateReportServiceTest {
 
     @Test
-void buildsReportWithoutError() {
-    TransactionRepositoryInterface repo = mock(TransactionRepositoryInterface.class);
+    void buildsReportWithoutError() {
+        TransactionRepositoryInterface repo = mock(TransactionRepositoryInterface.class);
 
-    List<Transaction> mockedTransactions = List.of(
-        new Transaction(
-            "user1",
-            LocalDateTime.now(),
-            "Netflix",
-            new Money(new BigDecimal("10.00"), Currency.USD),
-            TransactionType.EXPENSE,
-            RepeatType.MONTHLY,
-            "Netflix Inc",
-            null
-        )
-    );
-    when(repo.findLastNByUsername("user1", 100)).thenReturn(mockedTransactions);
+        List<Transaction> mockedTransactions = List.of(
+                Transaction.builder()
+                        .withUsername("user1")
+                        .withTimestamp(LocalDateTime.now())
+                        .withReference("Netflix")
+                        .withMoney(new Money(new BigDecimal("10.00"), Currency.USD))
+                        .withType(TransactionType.EXPENSE)
+                        .withRepeatType(RepeatType.MONTHLY)
+                        .withSentTo("Netflix Inc")
+                        .withSentFrom("user1")
+                        .build());
 
-    PdfReportBuilder pdfReportBuilder = mock(PdfReportBuilder.class);
-    when(pdfReportBuilder.buildWithChart(any(), any(), any(), any()))
-        .thenReturn(new byte[] {1, 2, 3});
+        when(repo.findLastNByUsername("user1", 100)).thenReturn(mockedTransactions);
 
-    GenerateReportService service = new GenerateReportService(repo, pdfReportBuilder);
+        PdfReportBuilder pdfReportBuilder = mock(PdfReportBuilder.class);
+        when(pdfReportBuilder.buildWithChart(any(), any(), any(), any()))
+                .thenReturn(new byte[] { 1, 2, 3 });
 
-    byte[] pdfBytes = service.generateReport("user1");
+        GenerateReportService service = new GenerateReportService(repo, pdfReportBuilder);
+        byte[] pdfBytes = service.generateReport("user1");
 
-    assertNotNull(pdfBytes, "PDF bytes should not be null");
-    assertTrue(pdfBytes.length > 0, "Generated PDF should not be empty");
-}
+        assertNotNull(pdfBytes, "PDF bytes should not be null");
+        assertTrue(pdfBytes.length > 0, "Generated PDF should not be empty");
+    }
 }
