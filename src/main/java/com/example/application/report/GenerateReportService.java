@@ -1,7 +1,7 @@
 package com.example.application.report;
 
 import com.example.domain.transaction.Transaction;
-import com.example.domain.transaction.TransactionRepository;
+import com.example.domain.transaction.TransactionRepositoryInterface;
 import com.example.infrastructure.report.PdfReportBuilder;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +13,15 @@ import java.util.*;
 @Service
 public class GenerateReportService {
 
-    private final TransactionRepository transactionRepository;
+    private final TransactionRepositoryInterface transactionRepository;
     private final PdfReportBuilder pdfReportBuilder;
 
-    public GenerateReportService(TransactionRepository transactionRepository, PdfReportBuilder pdfReportBuilder) {
+    public GenerateReportService(TransactionRepositoryInterface transactionRepository, PdfReportBuilder pdfReportBuilder) {
         this.transactionRepository = transactionRepository;
         this.pdfReportBuilder = pdfReportBuilder;
     }
 
-    public byte[] generateQuarterlyReport(String username) {
+    public byte[] generateReport(String username) {
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
         List<Transaction> allTx = transactionRepository.findLastNByUsername(username, 100);
         List<Transaction> recentTx = allTx.stream()

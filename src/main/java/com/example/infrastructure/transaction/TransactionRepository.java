@@ -1,8 +1,8 @@
 package com.example.infrastructure.transaction;
 
-import com.example.domain.transaction.TransactionRepository;
+import com.example.domain.transaction.TransactionRepositoryInterface;
 import com.example.domain.transaction.TransactionType;
-import com.example.infrastructure.transaction.InMemoryTransactionRepository;
+import com.example.infrastructure.transaction.TransactionRepository;
 import com.example.domain.transaction.RepeatType;
 import com.example.domain.transaction.Transaction;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InMemoryTransactionRepository implements TransactionRepository {
+public class TransactionRepository implements TransactionRepositoryInterface {
     private final Map<String, List<Transaction>> store = new ConcurrentHashMap<>();
 
     @Override

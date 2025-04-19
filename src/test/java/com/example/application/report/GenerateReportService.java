@@ -1,6 +1,6 @@
 package com.example.application.report;
 
-import com.example.domain.transaction.TransactionRepository;
+import com.example.domain.transaction.TransactionRepositoryInterface;
 import com.example.domain.transaction.Money;
 import com.example.domain.transaction.RepeatType;
 import com.example.domain.transaction.TransactionType;
@@ -19,7 +19,7 @@ class GenerateReportServiceTest {
 
     @Test
 void buildsReportWithoutError() {
-    TransactionRepository repo = mock(TransactionRepository.class);
+    TransactionRepositoryInterface repo = mock(TransactionRepositoryInterface.class);
 
     List<Transaction> mockedTransactions = List.of(
         new Transaction(
@@ -41,7 +41,7 @@ void buildsReportWithoutError() {
 
     GenerateReportService service = new GenerateReportService(repo, pdfReportBuilder);
 
-    byte[] pdfBytes = service.generateQuarterlyReport("user1");
+    byte[] pdfBytes = service.generateReport("user1");
 
     assertNotNull(pdfBytes, "PDF bytes should not be null");
     assertTrue(pdfBytes.length > 0, "Generated PDF should not be empty");

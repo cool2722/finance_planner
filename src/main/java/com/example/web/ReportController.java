@@ -16,7 +16,7 @@ public class ReportController {
 
     @GetMapping("/summary")
     public ResponseEntity<byte[]> generateReport(@RequestParam String username) {
-        byte[] pdfBytes = generateReportService.generateQuarterlyReport(username);
+        byte[] pdfBytes = generateReportService.generateReport(username);
         System.out.println("📦 Controller received PDF size: " + pdfBytes.length);
 
         HttpHeaders headers = new HttpHeaders();

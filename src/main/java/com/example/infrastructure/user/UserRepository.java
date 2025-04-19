@@ -1,14 +1,14 @@
 package com.example.infrastructure.user;
 
 import com.example.domain.user.User;
-import com.example.domain.user.UserRepository;
+import com.example.domain.user.UserRepositoryInterface;
 
 import java.util.*;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InMemoryUserRepository implements UserRepository {
+public class UserRepository implements UserRepositoryInterface {
     private final Map<String, User> users = new HashMap<>();
 
     @Override

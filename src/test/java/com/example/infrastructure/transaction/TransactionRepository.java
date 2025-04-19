@@ -13,10 +13,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTransactionRepositoryTest {
+class TransactionRepositoryTest {
     @Test
     void returnsMax50Transactions() {
-        InMemoryTransactionRepository repo = new InMemoryTransactionRepository();
+        TransactionRepository repo = new TransactionRepository();
         for (int i = 1; i < 100; i++) {
             repo.save(new Transaction("u1",null ,"T" + i, new Money(new BigDecimal(Double.toString(0.01 + (100 * (Math.random() * i)))), Currency.INR), TransactionType.EXPENSE, RepeatType.NONE, "X", "u1"));
             // Code smell with double floating point precisioin?
