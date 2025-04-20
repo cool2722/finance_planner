@@ -19,14 +19,13 @@ public class Transaction {
         this.id = UUID.randomUUID();
         this.username = Objects.requireNonNull(builder.username, "Must assign to a user");
         this.reference = builder.reference != null ? builder.reference : "";
-        this.money = builder.money;
-        this.type = builder.type;
+        this.money = Objects.requireNonNull(builder.money, "Money must be assigned to a user");
+        this.type = Objects.requireNonNull(builder.type,"Type must be assigned to a user");
         this.repeatType = builder.repeatType != null ? builder.repeatType : RepeatType.NONE;
         this.sentTo = (type.isExpense()) ? builder.sentTo : builder.username;
         this.sentFrom = (type.isIncome()) ? builder.sentFrom : builder.username;
         this.timestamp = builder.timestamp != null ? builder.timestamp : LocalDateTime.now();
     }
-
     public UUID getId() { return id; }
     public String getUsername() { return username; }
     public String getReference() { return reference; }
