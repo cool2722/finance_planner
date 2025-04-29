@@ -49,6 +49,4 @@ public class TransactionController {
         String username = JwtUtil.extractUsername(token.replace("Bearer ", ""));
         return transactionRepository.findByUsernameFiltered(username, type, repeatType);
     }
-} // Potential Refactor? Maybe Controller shouldnt directly accept Domain models
-  // (Transaction)?
-  // Code smell lifted
+}
